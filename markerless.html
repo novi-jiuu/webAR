@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>WebAR Markerless</title>
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <style>
+      body { margin: 0; overflow: hidden; }
+      #ui {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 10px;
+      }
+      button {
+        padding: 10px 15px;
+        border: none;
+        border-radius: 6px;
+        background: #4caf50;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <a-scene>
+      <a-assets>
+        <a-asset-item id="model"></a-asset-item>
+        <audio id="bg-music" preload="auto"></audio>
+      </a-assets>
+
+      <a-entity id="obj" position="0 0 -3" scale="0.5 0.5 0.5" rotation="0 30 0"></a-entity>
+
+      <a-camera position="0 1.6 0"></a-camera>
+    </a-scene>
+
+    <div id="ui">
+      <button onclick="toggleMusic()">Play/Pause Music</button>
+      <button onclick="window.location.href='index.html'">⬅ Kembali</button>
+    </div>
+
+    <script>
+      // --- pilih desa ---
+      const params = new URLSearchParams(window.location.search);
+      const desa = params.get("desa");
+
+      const model = document.getElementById("model");
+      const obj = document.getElementById("obj");
+      const music = document.getElementById("bg-music");
+
+      if (desa === "sebuji") {
+        model.setAttribute("src", "assets/rumah_adat.glb");
+        obj.setAttribute("gltf-model", "#model");
+        music.setAttribute("src", "assets/tari_sebujit.mp3");
+      } else if (desa === "jagoi") {
+        model.setAttribute("src", "assets/rumah_jagoi.glb");
+        obj.setAttribute("gltf-model", "#model");
+        music.setAttribute("src", "assets/tari_jagoi.mp3");
+      }
+
+      // --- kontrol musik ---
+      let playing = false;
+      function toggleMusic() {
+        if (!playing) { music.play(); playing = true; }
+        else { music.pause(); playing = false; }
+      }
+    </script>
+  </body>
+</html>
