@@ -28,47 +28,33 @@
   <body>
     <a-scene embedded arjs>
       <a-assets>
-        <!-- aset akan dipilih via JS -->
-        <a-asset-item id="model"></a-asset-item>
-        <audio id="bg-music" preload="auto"></audio>
+        <a-asset-item id="rumah" src="assets/rumah_adat.glb"></a-asset-item>
+        <audio id="bg-music" src="assets/dayak.mp3" autoplay loop></audio>
       </a-assets>
 
       <a-marker type="pattern" url="assets/marker.patt">
-        <a-entity id="obj" scale="0.4 0.4 0.4" rotation="0 30 0"></a-entity>
+        <!-- Rotasi otomatis -->
+        <a-entity gltf-model="#rumah" scale="0.4 0.4 0.4" rotation="0 0 0"
+          animation="property: rotation; to: 0 360 0; loop: true; dur: 15000; easing: linear">
+        </a-entity>
       </a-marker>
 
       <a-entity camera></a-entity>
     </a-scene>
 
     <div id="ui">
-      <button onclick="toggleMusic()">Play/Pause Music</button>
+      <button onclick="toggleMusic()">⏯ Musik</button>
       <button onclick="window.location.href='index.html'">⬅ Kembali</button>
     </div>
 
     <script>
-      // --- pilih desa ---
-      const params = new URLSearchParams(window.location.search);
-      const desa = params.get("desa");
-
-      const model = document.getElementById("model");
-      const obj = document.getElementById("obj");
       const music = document.getElementById("bg-music");
-
-      if (desa === "sebujit") {
-        model.setAttribute("src", "assets/rumah_adat.glb");
-        obj.setAttribute("gltf-model", "#model");
-        music.setAttribute("src", "assets/tari_sebujit.mp3");
-      } else if (desa === "jagoi") {
-        model.setAttribute("src", "assets/rumah_baluk.glb");
-        obj.setAttribute("gltf-model", "#model");
-        music.setAttribute("src", "assets/tari_jagoi.mp3");
-      }
-
-      // --- kontrol musik ---
-      let playing = false;
       function toggleMusic() {
-        if (!playing) { music.play(); playing = true; }
-        else { music.pause(); playing = false; }
+        if (music.paused) {
+          music.play();
+        } else {
+          music.pause();
+        }
       }
     </script>
   </body>
